@@ -8,6 +8,6 @@ describe("template spec", () => {
   // });
 
   it("should render the title", () => {
-    cy.contains("h2", "Bucket List").should("be.visible");
+    cy.contains("h1", "Bucket List").should("be.visible");
   });
 });
