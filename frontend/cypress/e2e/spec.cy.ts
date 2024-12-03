@@ -6,5 +6,8 @@ describe("template spec", () => {
   // it("passes", () => {
   //   cy.visit("http://localhost:5173/");
   // });
-  cy.contains("h2", "Bucket List").should("be.visible");
+
+  it("should render the title", () => {
+    cy.contains("h2", "Bucket List").should("be.visible");
+  });
 });
