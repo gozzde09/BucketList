@@ -27,21 +27,27 @@ jobs:
         working-directory: frontend
         run: npm test
 
-  build:
-    runs-on: ubuntu-latest
-    needs: lint-test
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
-      - name: Build project
-        working-directory: frontend
-        run: npm run build
+    build:
+      runs-on: ubuntu-latest
+      needs: lint-test
+      steps:
+        - uses: actions/checkout@v3
+        - name: Setup Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 18
+        - name: Install dependencies
+          working-directory: frontend
+          run: npm install
+        - name: Build project
+          working-directory: frontend
+          run: npm run build
+        - name: Start Vite Application
+          run: npm run dev &
+          env:
+          PORT: 5173
+        - name: Wait for Application
+        run: npx wait-on http://localhost:5173
 
   e2e-tests:
     runs-on: ubuntu-latest
