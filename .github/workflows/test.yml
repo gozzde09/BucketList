@@ -22,14 +22,17 @@ jobs:
 
       # Bağımlılıkları yükle
       - name: Install dependencies
+        working-directory: frontend
         run: npm install
 
       # Vite geliştirme sunucusunu başlat
       - name: Start Vite dev server
+        working-directory: frontend
         run: |
           npm run dev &
-          sleep 10 # Sunucunun tamamen başlamasını beklemek için
+          sleep 10
 
       # Cypress testlerini çalıştır
       - name: Run Cypress tests
-        run: npm cypress run
+        working-directory: frontend
+        run: npx cypress run
