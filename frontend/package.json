@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "cypress run"
+    "test": "cypress run",
+    "test:ci": "cypress run"
   },
   "dependencies": {
     "react": "^18.2.0",
