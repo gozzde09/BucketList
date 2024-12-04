@@ -1,3 +1,4 @@
+# https://resources.github.com/learn/pathways/automation/essentials/application-testing-with-github-actions/
 name: Cypress Tests
 
 on:
@@ -43,11 +44,10 @@ jobs:
           working-directory: frontend
           run: npm run build
         - name: Start Vite Application
+          working-directory: frontend
           run: npm run dev &
           env:
           PORT: 5173
-        - name: Wait for Application
-        run: npx wait-on http://localhost:5173
 
   e2e-tests:
     runs-on: ubuntu-latest
