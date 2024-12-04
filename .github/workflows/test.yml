@@ -6,16 +6,6 @@ on:
       - main
 
 jobs:
-  lint-typecheck-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Lint code
-        working-directory: frontend
-        run: npm run lint
-      - name: Type check
-        working-directory: frontend
-        run: npm run type-check
-
   tests:
     runs-on: ubuntu-latest # Ubuntu som körmiljö
 
@@ -51,3 +41,9 @@ jobs:
       - name: Run Cypress Component Tests
         working-directory: frontend
         run: npm run test --component # Kör komponenttester
+      - name: Lint code
+        working-directory: frontend
+        run: npm run lint
+      - name: Type check
+        working-directory: frontend
+        run: npm run type-check
