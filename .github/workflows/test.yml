@@ -28,8 +28,7 @@ jobs:
       # Steg 4: Starta Vite-utvecklingsservern
       - name: Start Vite dev server
         working-directory: frontend
-        run: |
-          npm run dev
+        run: npm run dev
 
       # Steg 5: Kör End-to-End (E2E) tester med Cypress
       - name: Run Cypress E2E tests
