@@ -6,9 +6,11 @@ on:
       - main
 
 jobs:
-  tests:
-    runs-on: ubuntu-latest # Ubuntu som körmiljö
-
+  # Setup-jobb som körs först
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend-directory: frontend
     steps:
       # Steg 1: Klona projektet från GitHub
       - name: Checkout repository
@@ -25,25 +27,39 @@ jobs:
         working-directory: frontend
         run: npm install
 
-      # Steg 4: Starta Vite-utvecklingsservern
-      - name: Start Vite dev server
-        working-directory: frontend
-        run: |
-          npm run dev & # Starta servern i bakgrunden
-          sleep 10      # Vänta i 10 sekunder så att servern hinner starta
-
-      # Steg 5: Kör End-to-End (E2E) tester med Cypress
-      - name: Run Cypress E2E tests
-        working-directory: frontend
-        run: npm run test --spec 'cypress/e2e/**/*' # Kör E2E-tester
-
-      # Steg 6: Kör komponenttester med Cypress
-      - name: Run Cypress Component Tests
-        working-directory: frontend
-        run: npm run test --component # Kör komponenttester
+  # Lint- och typkontrolljobb
+  lint-typecheck:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      # Steg 1: Lintning av koden
       - name: Lint code
         working-directory: frontend
         run: npm run lint
+
+      # Steg 2: Kontrollera typdefinitioner (TypeScript)
       - name: Type check
         working-directory: frontend
         run: npm run type-check
+
+  # Testjobb
+  tests:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      # Steg 1: Starta Vite-utvecklingsservern
+      - name: Start Vite dev server
+        working-directory: frontend
+        run: |
+          npm run dev & # Startar servern i bakgrunden
+          sleep 10      # Väntar 10 sekunder för att servern ska hinna starta
+
+      # Steg 2: Kör End-to-End (E2E) tester med Cypress
+      - name: Run Cypress E2E tests
+        working-directory: frontend
+        run: npm run test --spec 'cypress/e2e/**/*'
+
+      # Steg 3: Kör komponenttester med Cypress
+      - name: Run Cypress Component Tests
+        working-directory: frontend
+        run: npm run test --component
