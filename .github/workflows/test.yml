@@ -6,26 +6,8 @@ on:
       - main
 
 jobs:
-  # Setup-jobb som körs först
   setup:
-    runs-on: ubuntu-latest
-    outputs:
-      frontend-directory: frontend
-    steps:
-      # Steg 1: Klona projektet från GitHub
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      # Steg 2: Installera Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Steg 3: Installera projektets beroenden
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
+    uses: ./.github/workflows/setup.yml # reusable workflow
 
   # Lint- och typkontrolljobb
   lint-typecheck:
