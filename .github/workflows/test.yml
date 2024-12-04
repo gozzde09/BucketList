@@ -6,12 +6,10 @@ on:
       - main
 
 jobs:
-  setup:
+  tests:
     uses: ./.github/workflows/setup.yml # reusable workflow
 
   # Lint- och typkontrolljobb
-  lint-typecheck:
-    uses: ./.github/workflows/setup.yml
     runs-on: ubuntu-latest
     needs: setup
     steps:
@@ -26,8 +24,6 @@ jobs:
         run: npm run type-check
 
   # Testjobb
-  tests:
-    uses: ./.github/workflows/setup.yml
     runs-on: ubuntu-latest
     needs: setup
     steps:
