@@ -6,46 +6,45 @@ on:
       - main
 
 jobs:
-  # Setup iş akışını başlatıyoruz
-  setup:
-    uses: ./.github/workflows/setup.yml
-    with:
-      frontend-directory: frontend
-
-  # Lint- och typkontrolljobb
-  lint-typecheck:
-    runs-on: ubuntu-latest
-    needs: setup # setup job'ını bekle
-    uses: ./.github/workflows/setup.yml
-    with:
-      frontend-directory: frontend
-    steps:
-      - name: Lint code
-        working-directory: frontend
-        run: npm run lint
-
-      - name: Type check
-        working-directory: frontend
-        run: npm run type-check
-
-  # Testjobb
   tests:
-    runs-on: ubuntu-latest
-    needs: setup # setup job'ını bekle
-    uses: ./.github/workflows/setup.yml
-    with:
-      frontend-directory: frontend
-    steps:
-      - name: Start Vite dev server
-        working-directory: frontend
-        run: |
-          npm run dev & # Start server in background
-          sleep 10      # Wait for server to start
+  runs-on: ubuntu-latest # Ubuntu som körmiljö
 
-      - name: Run Cypress E2E tests
-        working-directory: frontend
-        run: npm run test --spec 'cypress/e2e/**/*'
+  steps:
+    # Steg 1: Klona projektet från GitHub
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Run Cypress Component Tests
-        working-directory: frontend
-        run: npm run test --component
+    # Steg 2: Installera Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    # Steg 3: Installera projektets beroenden
+    - name: Install dependencies
+      working-directory: frontend
+      run: npm install
+
+    # Steg 4: Starta Vite-utvecklingsservern
+    - name: Start Vite dev server
+      working-directory: frontend
+      run: |
+        npm run dev & # Starta servern i bakgrunden
+        sleep 10      # Vänta i 10 sekunder så att servern hinner starta
+    # Steg 5: Lint & Typecheck TS
+    - name: Lint code
+      working-directory: frontend
+      run: npm run lint
+    - name: Type check
+      working-directory: frontend
+      run: npm run type-check
+
+    # Steg 6: Kör End-to-End (E2E) tester med Cypress
+    - name: Run Cypress E2E tests
+      working-directory: frontend
+      run: npm run test --spec 'cypress/e2e/**/*' # Kör E2E-tester
+
+    # Steg 7: Kör komponenttester med Cypress
+    - name: Run Cypress Component Tests
+      working-directory: frontend
+      run: npm run test --component # Kör komponenttester
