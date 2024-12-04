@@ -6,8 +6,7 @@ on:
       - main
 
 jobs:
-  setup:
-    uses: ./.github/workflows/setup.yml # reusable workflow
+  uses: ./.github/workflows/setup.yml # reusable workflow
 
   # Lint- och typkontrolljobb
   lint-typecheck:
