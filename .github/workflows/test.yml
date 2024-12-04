@@ -28,8 +28,8 @@ jobs:
       - name: Start Vite dev server
         run: |
           npm run dev &
-          sleep 10 # Sunucunun tamamen başlamasını beklemek için
-
+          sleep 10
       # Cypress testlerini çalıştır
       - name: Run Cypress tests
-        run: npm run test:ci
+        run: npm cypress run
+        run: npx cypress run --component
