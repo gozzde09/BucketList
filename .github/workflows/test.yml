@@ -6,40 +6,46 @@ on:
       - main
 
 jobs:
-  tests:
-    uses: ./.github/workflows/setup.yml # reusable workflow
+  # Setup iş akışını başlatıyoruz
+  setup:
+    uses: ./.github/workflows/setup.yml
+    with:
+      frontend-directory: frontend
 
   # Lint- och typkontrolljobb
+  lint-typecheck:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: setup # setup job'ını bekle
+    uses: ./.github/workflows/setup.yml
+    with:
+      frontend-directory: frontend
     steps:
-      # Steg 1: Lintning av koden
       - name: Lint code
         working-directory: frontend
         run: npm run lint
 
-      # Steg 2: Kontrollera typdefinitioner (TypeScript)
       - name: Type check
         working-directory: frontend
         run: npm run type-check
 
   # Testjobb
+  tests:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: setup # setup job'ını bekle
+    uses: ./.github/workflows/setup.yml
+    with:
+      frontend-directory: frontend
     steps:
-      # Steg 1: Starta Vite-utvecklingsservern
       - name: Start Vite dev server
         working-directory: frontend
         run: |
-          npm run dev & # Startar servern i bakgrunden
-          sleep 10      # Väntar 10 sekunder för att servern ska hinna starta
+          npm run dev & # Start server in background
+          sleep 10      # Wait for server to start
 
-      # Steg 2: Kör End-to-End (E2E) tester med Cypress
       - name: Run Cypress E2E tests
         working-directory: frontend
         run: npm run test --spec 'cypress/e2e/**/*'
 
-      # Steg 3: Kör komponenttester med Cypress
       - name: Run Cypress Component Tests
         working-directory: frontend
         run: npm run test --component
