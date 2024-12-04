@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Cypress Tests
 
 on:
   push:
@@ -7,32 +7,36 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # Ubuntu som körmiljö
 
     steps:
-      # Proje kodunu al
+      # Steg 1: Klona projektet från GitHub
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Node.js kurulumu
+      # Steg 2: Installera Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      # Bağımlılıkları yükle
+      # Steg 3: Installera projektets beroenden
       - name: Install dependencies
         working-directory: frontend
         run: npm install
 
-      # Vite geliştirme sunucusunu başlat
+      # Steg 4: Starta Vite-utvecklingsservern
       - name: Start Vite dev server
         working-directory: frontend
         run: |
-          npm run dev &
-          sleep 10
+          npm run dev
 
-      # Cypress testlerini çalıştır
-      - name: Run Cypress tests
+      # Steg 5: Kör End-to-End (E2E) tester med Cypress
+      - name: Run Cypress E2E tests
         working-directory: frontend
-        run: npx cypress run
+        run: npx cypress run --spec 'cypress/e2e/**/*' # Kör E2E-tester
+
+      # Steg 6: Kör komponenttester med Cypress
+      - name: Run Cypress Component Tests
+        working-directory: frontend
+        run: npx cypress run --component # Kör komponenttester
