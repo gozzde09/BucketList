@@ -17,6 +17,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: backend-country
     depends_on:
       database:
