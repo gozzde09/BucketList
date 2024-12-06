@@ -1,10 +1,13 @@
 describe("template spec", () => {
-  it("passes", () => {
-    cy.visit("http://127.0.0.1:5173/");
+  beforeEach(() => {
+    //VISIT THE PAGE
+    cy.visit("/");
   });
-
-  it("should render the title", () => {
-    cy.visit("http://127.0.0.1:5173/");
-    cy.contains("h1", "BucketList").should("be.visible");
+  it("fetches all the countries from the database", () => {
+    cy.request("GET", "/api/countries").then((response) => {
+      expect(response.status).to.eq(200); // response OK
+      expect(response.body).to.be.an("array");
+      expect(response.body).to.have.length.greaterThan(0);
+    });
   });
 });
