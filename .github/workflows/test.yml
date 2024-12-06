@@ -44,24 +44,24 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       # Install dependencies for frontend and backend
-      # - name: Install Frontend dependencies
-      #   working-directory: frontend
-      #   run: npm install
-      # - name: Install Backend dependencies
-      #   working-directory: backend
-      #   run: npm install
+      - name: Install Frontend dependencies
+        working-directory: frontend
+        run: npm install
+      - name: Install Backend dependencies
+        working-directory: backend
+        run: npm install
 
       # Build containers
       - name: Build containers
         run: docker compose up --build -d
 
-      # - name: Lint code
-      #   working-directory: frontend
-      #   run: npm run lint
+      - name: Lint code
+        working-directory: frontend
+        run: npm run lint
 
-      # - name: Type check
-      #   working-directory: frontend
-      #   run: npm run type-check
+      - name: Type check
+        working-directory: frontend
+        run: npm run type-check
 
       # Wait for frontend to be ready
       # - name: Wait for frontend to be ready
